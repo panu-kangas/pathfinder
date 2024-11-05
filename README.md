@@ -2,5 +2,5 @@
 
 **!! THIS PROJECT IS UNDER CONSTRUCTION !!**
 
-Pathfinder is an impllementation of the A* pathfinding algorithm.  
-It is written in C++ and it uses SFML to give a visualization to the algorithms process.  
+Pathfinder will be an impllementation of the A* pathfinding algorithm.  
+It will be written in C++ and it will use SFML to give a visualization to the algorithms process.  
