@@ -28,13 +28,13 @@ void	InfoBox::initInfoBox(sf::RenderWindow &window, const int &tileSize)
 
 	m_infoText.setFont(m_Font);
 	m_infoText.setPosition(m_boxPos.x + 2, m_boxPos.y + 2);
-	m_infoText.setCharacterSize(23);
+	m_infoText.setCharacterSize(15);
 	m_infoText.setFillColor(sf::Color::Black);
 
 	m_tileText.setFont(m_Font);
-	m_tileText.setCharacterSize(20);
+	m_tileText.setCharacterSize(12);
 	m_tileText.setFillColor(sf::Color::Black);
-	m_tileText.setPosition(window.getSize().x - 180, m_boxPos.y + 2);
+	m_tileText.setPosition(window.getSize().x - 90, m_boxPos.y + 2);
 }
 
 

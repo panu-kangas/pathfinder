@@ -11,6 +11,9 @@ m_gridWidth(width * tileSize), m_gridHeight(height * tileSize), m_tileSize(tileS
     gridTile    tempTile;
     std::vector<gridTile>   tempVec;
 
+	tempTile.distToStart = 0;
+	tempTile.distToFinish = 0;
+
     for (int y = 0; y < m_gridHeight; y += m_tileSize)
     {
         for (int x = 0; x < m_gridWidth; x += m_tileSize)
@@ -25,6 +28,9 @@ m_gridWidth(width * tileSize), m_gridHeight(height * tileSize), m_tileSize(tileS
                 tempTile.type = EMPTY;
                 tempTile.color = sf::Color::White;
             }
+			tempTile.coord.x = x;
+			tempTile.coord.y = y;
+			
             tempVec.push_back(tempTile);
         }
         m_gridVec.push_back(tempVec);
@@ -169,7 +175,6 @@ void	Pathfinder::updateTileInfo(int type, sf::Color color)
 
 
 
-
 /*
 	GETTERS
 */
@@ -183,4 +188,21 @@ int		Pathfinder::getState()
 {
 	return (m_state);
 }
+
+sf::Vector2i	&Pathfinder::getStartPos()
+{
+	return (m_startCoord);
+}
+
+sf::Vector2i	&Pathfinder::getFinishPos()
+{
+	return (m_finishCoord);
+}
+
+
+std::vector<std::vector<gridTile>>  &Pathfinder::getGridVec()
+{
+	return (m_gridVec);
+}
+
 

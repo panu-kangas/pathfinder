@@ -23,8 +23,12 @@ enum states
 
 struct  gridTile
 {
-    sf::Color   color;
-    int         type;
+	int         	type;
+    sf::Color   	color;
+
+	int				distToStart;
+	int				distToFinish;
+	sf::Vector2i	coord;
 };
 
 
@@ -61,8 +65,12 @@ class Pathfinder
     void    checkMousePress(sf::RenderWindow &window);
 	void	checkClickedInput(sf::Event &event);
 
-	InfoBox	&getInfoBox();
-	int		getState();
+	InfoBox			&getInfoBox();
+	int				getState();
+	sf::Vector2i	&getStartPos();
+	sf::Vector2i	&getFinishPos();
+	std::vector<std::vector<gridTile>>  &getGridVec();
+
 
 };
 

@@ -1,12 +1,27 @@
 #include <SFML/Graphics.hpp>
 #include "Pathfinder.hpp"
 
+#include "FinderAlgo.hpp"
+
 void    fixWindowPos(sf::RenderWindow &window)
 {
      // Get monitor size
     sf::Vector2i monitorSize;
     monitorSize.x = sf::VideoMode::getDesktopMode().width;
     monitorSize.y = sf::VideoMode::getDesktopMode().height;
+
+// Use this only after you've fixed all of the window.getSize() functions out
+
+//	float	height = monitorSize.y * 0.8;
+
+//	if (height > window.getSize().y)
+//	{
+//		sf::Vector2u	newSize;
+//		newSize.x = height;
+//		newSize.y = height;
+//		window.setSize(newSize);
+//	}
+
 
     // Center monitor
     sf::Vector2i windowPos;
@@ -19,9 +34,13 @@ void    fixWindowPos(sf::RenderWindow &window)
 int main()
 {
     // Constant variables
-    const int   windowTileWidth = 20; // in tiles
+    const int   windowTileWidth = 17; // in tiles
     const int   windowTileHeight = 17; // in tiles
-    const int   tileSize = 80;
+    const int   tileSize = 40;
+
+	// IDEA! Create a const variable "gameWindowSize", that is passed on & stored around
+	// That way I don't need to use the window.getSize() function anywhere, and the scale will
+	// remain untouched
 
     auto window = sf::RenderWindow({tileSize * windowTileWidth, tileSize * windowTileHeight}, "A* Pathfinder");
     window.setFramerateLimit(144);
@@ -55,6 +74,17 @@ int main()
         finder.drawGrid(window);
 
 		finder.getInfoBox().draw(window, finder.getState());
+
+	// FIX THIS! It works, but you need to make it static somehow...
+	// It is NOT supposed to happen on every frame!
+/*
+		if (finder.getStartPos().x != -1 && finder.getFinishPos().x != -1)
+		{
+			FinderAlgo algo(finder.getStartPos(), finder.getFinishPos());
+			algo.countDistances(finder.getGridVec());
+			algo.draw(window, finder.getGridVec());
+		}
+*/
 
         window.display();
     }

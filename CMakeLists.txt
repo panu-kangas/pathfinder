@@ -17,6 +17,7 @@ add_executable(pathfinder
 src/main.cpp 
 src/Pathfinder.cpp 
 src/InfoBox.cpp
+src/FinderAlgo.cpp
 )
 target_link_libraries(pathfinder PRIVATE sfml-graphics)
 target_compile_features(pathfinder PRIVATE cxx_std_17)
