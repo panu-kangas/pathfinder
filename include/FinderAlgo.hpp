@@ -1,7 +1,10 @@
 #ifndef FINDERALGO_HPP
 # define FINDERALGO_HPP
 
-# include "Pathfinder.hpp"
+# include "Types.hpp"
+
+class Pathfinder;
+
 
 class FinderAlgo
 {
@@ -13,14 +16,26 @@ class FinderAlgo
 	sf::Font		m_font;
 	sf::Text		m_distanceInfoText;
 
+	std::vector<gridTile *>	m_adjacentTileVec;
+	std::vector<gridTile *>	m_visitedTileVec;
+	std::vector<gridTile *>	m_finalPath;
+
+	void		visitTile(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord);
+	gridTile	*checkAdjacentTiles(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord);
+	void		countGridDistance(gridTile &tile);
+	void		findFinalPath(std::vector<std::vector<gridTile>> &gridVec);
+
 
 	public:
 
-	FinderAlgo(sf::Vector2i &startPos, sf::Vector2i &finishPos);
+	FinderAlgo();
 	~FinderAlgo() {};
 
-	void	countDistances(std::vector<std::vector<gridTile>> &gridVec);
-	void	draw(sf::RenderWindow &window, std::vector<std::vector<gridTile>> &gridVec);
+	void	init(sf::Vector2i startPos, sf::Vector2i finishPos, sf::Vector2u windowSize);
+	bool	execute(std::vector<std::vector<gridTile>> &gridVec);
+	void	reset();
+
+	void	drawNumbers(sf::RenderWindow &window, const int &tileSize);
 
 };
 

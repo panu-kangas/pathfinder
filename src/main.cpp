@@ -1,54 +1,30 @@
 #include <SFML/Graphics.hpp>
 #include "Pathfinder.hpp"
-
 #include "FinderAlgo.hpp"
 
-void    fixWindowPos(sf::RenderWindow &window)
-{
-     // Get monitor size
-    sf::Vector2i monitorSize;
-    monitorSize.x = sf::VideoMode::getDesktopMode().width;
-    monitorSize.y = sf::VideoMode::getDesktopMode().height;
 
-// Use this only after you've fixed all of the window.getSize() functions out
+void    fixWindowPos(sf::RenderWindow &window, sf::Vector2u windowPxSize);
 
-//	float	height = monitorSize.y * 0.8;
-
-//	if (height > window.getSize().y)
-//	{
-//		sf::Vector2u	newSize;
-//		newSize.x = height;
-//		newSize.y = height;
-//		window.setSize(newSize);
-//	}
-
-
-    // Center monitor
-    sf::Vector2i windowPos;
-    windowPos.x = monitorSize.x / 2 - window.getSize().x / 2;
-    windowPos.y = monitorSize.y / 2 - window.getSize().y / 2;
-    window.setPosition(windowPos);
-
-}
 
 int main()
 {
-    // Constant variables
-    const int   windowTileWidth = 17; // in tiles
-    const int   windowTileHeight = 17; // in tiles
-    const int   tileSize = 40;
+    // Constant variables --> Should these be counted base on the monitor size...?
+    const int   TileCountHoriz = 17;
+    const int   TileCountVert = 17;
+    const int   tileSize = 80; // 40 at home, 80 at school
 
-	// IDEA! Create a const variable "gameWindowSize", that is passed on & stored around
-	// That way I don't need to use the window.getSize() function anywhere, and the scale will
-	// remain untouched
+	// Count window size
+	sf::Vector2u	windowPxSize;
+	windowPxSize.x = tileSize * TileCountHoriz;
+	windowPxSize.y = tileSize * TileCountVert;
 
-    auto window = sf::RenderWindow({tileSize * windowTileWidth, tileSize * windowTileHeight}, "A* Pathfinder");
+    auto window = sf::RenderWindow({windowPxSize.x, windowPxSize.y}, "A* Pathfinder");
     window.setFramerateLimit(144);
+    fixWindowPos(window, windowPxSize);
 
-    fixWindowPos(window);
-
-    Pathfinder  finder(windowTileWidth, windowTileHeight, tileSize);
-	finder.getInfoBox().initInfoBox(window, tileSize);
+	// Init pathfinder
+    Pathfinder  finder(TileCountHoriz, TileCountVert, tileSize);
+	finder.getInfoBox().initInfoBox(window, windowPxSize, tileSize);
 
     // Rendering loop
     while (window.isOpen())
@@ -61,8 +37,12 @@ int main()
                 window.close();
             }
 
+			// Add possibility to reset calculations by pressing R
+
 			if (event.type == sf::Event::KeyPressed && finder.getState() == CLICKED)
 				finder.checkClickedInput(event);
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::D)
+				finder.changeDisplayNumberState();
 
             if (event.type == sf::Event::MouseButtonPressed \
             && event.mouseButton.button == sf::Mouse::Button::Left)
@@ -71,11 +51,57 @@ int main()
 
         window.clear();
 
-        finder.drawGrid(window);
+		if (finder.getStartPos().x != -1 && finder.getFinishPos().x != -1)
+		{
+			finder.initAlgo(windowPxSize);
+			finder.executeAlgo();
+		}
 
-		finder.getInfoBox().draw(window, finder.getState());
+		finder.drawGrid(window);
+		finder.getInfoBox().draw(window, finder.getState()); // Make more abstract
 
-	// FIX THIS! It works, but you need to make it static somehow...
+		if (finder.getDisplayNumberStatus())
+			finder.getAlgo().drawNumbers(window, tileSize);
+
+	
+
+        window.display();
+    }
+}
+
+
+/*
+	HELPER FUNCTION
+*/
+
+void    fixWindowPos(sf::RenderWindow &window, sf::Vector2u windowPxSize)
+{
+     // Get monitor size
+    sf::Vector2i monitorSize;
+    monitorSize.x = sf::VideoMode::getDesktopMode().width;
+    monitorSize.y = sf::VideoMode::getDesktopMode().height;
+
+/*	float	height = monitorSize.y * 0.8;
+
+	if (height > windowPxSize.y)
+	{
+		sf::Vector2u	newSize;
+		newSize.x = height;
+		newSize.y = height;
+		window.setSize(newSize);
+	}
+*/
+
+    // Center monitor
+    sf::Vector2i windowPos;
+    windowPos.x = monitorSize.x / 2 - window.getSize().x / 2;
+    windowPos.y = monitorSize.y / 2 - window.getSize().y / 2;
+    window.setPosition(windowPos);
+
+}
+
+
+// FIX THIS! It works, but you need to make it static somehow...
 	// It is NOT supposed to happen on every frame!
 /*
 		if (finder.getStartPos().x != -1 && finder.getFinishPos().x != -1)
@@ -85,7 +111,3 @@ int main()
 			algo.draw(window, finder.getGridVec());
 		}
 */
-
-        window.display();
-    }
-}

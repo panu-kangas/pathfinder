@@ -21,20 +21,20 @@ InfoBox::InfoBox()
 	INIT INFO
 */
 
-void	InfoBox::initInfoBox(sf::RenderWindow &window, const int &tileSize)
+void	InfoBox::initInfoBox(sf::RenderWindow &window, sf::Vector2u windowSize, const int &tileSize)
 {
 	m_boxPos.x = 0;
-	m_boxPos.y = window.getSize().y - tileSize;
+	m_boxPos.y = windowSize.y - tileSize;
 
 	m_infoText.setFont(m_Font);
 	m_infoText.setPosition(m_boxPos.x + 2, m_boxPos.y + 2);
-	m_infoText.setCharacterSize(15);
+	m_infoText.setCharacterSize(windowSize.x / 45); // Fix this later...?
 	m_infoText.setFillColor(sf::Color::Black);
 
 	m_tileText.setFont(m_Font);
-	m_tileText.setCharacterSize(12);
+	m_tileText.setCharacterSize(windowSize.x / 56); // Fix this later...?
 	m_tileText.setFillColor(sf::Color::Black);
-	m_tileText.setPosition(window.getSize().x - 90, m_boxPos.y + 2);
+	m_tileText.setPosition(windowSize.x - windowSize.x / 7.8, m_boxPos.y + 2);
 }
 
 

@@ -7,12 +7,33 @@
 Pathfinder::Pathfinder(const int &width, const int &height, const int &tileSize) : 
 m_gridWidth(width * tileSize), m_gridHeight(height * tileSize), m_tileSize(tileSize)
 {
-    // Init grid vector
+    initGridVec();
+
+    m_state = FREE;
+	m_dislayNumbers = false;
+	m_algoInit = false;
+	m_algoFinished = false;
+	m_activeTile.x = 0;
+	m_activeTile.y = 0;
+	m_startCoord.x = -1;
+	m_startCoord.y = -1;
+	m_finishCoord.x = -1;
+	m_finishCoord.y = -1;
+
+	m_drawShape.setSize({m_tileSize, m_tileSize});
+    m_drawShape.setOutlineThickness(2);
+    m_drawShape.setOutlineColor(sf::Color::Black);
+}
+
+void	Pathfinder::initGridVec()
+{
     gridTile    tempTile;
     std::vector<gridTile>   tempVec;
 
 	tempTile.distToStart = 0;
 	tempTile.distToFinish = 0;
+	tempTile.isVisited = false;
+	tempTile.isFinalPath = false;
 
     for (int y = 0; y < m_gridHeight; y += m_tileSize)
     {
@@ -28,27 +49,14 @@ m_gridWidth(width * tileSize), m_gridHeight(height * tileSize), m_tileSize(tileS
                 tempTile.type = EMPTY;
                 tempTile.color = sf::Color::White;
             }
-			tempTile.coord.x = x;
-			tempTile.coord.y = y;
+			tempTile.coord.x = x / m_tileSize;
+			tempTile.coord.y = y / m_tileSize;
 			
             tempVec.push_back(tempTile);
         }
         m_gridVec.push_back(tempVec);
         tempVec.clear();
     }
-
-    m_drawShape.setSize({m_tileSize, m_tileSize});
-    m_drawShape.setOutlineThickness(2);
-    m_drawShape.setOutlineColor(sf::Color::Black);
-
-    m_state = FREE;
-
-	m_activeTile.x = 0;
-	m_activeTile.y = 0;
-	m_startCoord.x = -1;
-	m_startCoord.y = -1;
-	m_finishCoord.x = -1;
-	m_finishCoord.y = -1;
 }
 
 
@@ -75,6 +83,39 @@ void    Pathfinder::drawGrid(sf::RenderWindow &window)
         }
     }
 }
+
+
+/*
+	ALGORITHM FUNCTIONS
+*/
+
+
+void	Pathfinder::initAlgo(sf::Vector2u windowSize)
+{
+	if (m_algoInit)
+		return ;
+
+	algo.init(m_startCoord, m_finishCoord, windowSize);
+	m_algoInit = true;
+}
+
+void	Pathfinder::executeAlgo()
+{
+	if (m_algoFinished)
+		return ;
+
+	m_algoFinished = algo.execute(m_gridVec);
+}
+
+void	Pathfinder::resetAlgo()
+{
+	algo.reset();
+	m_algoInit = false;
+	m_algoFinished = false;
+}
+
+
+
 
 
 /*
@@ -141,6 +182,7 @@ void	Pathfinder::updateTileInfo(int type, sf::Color color)
 		}
 		m_startCoord.x = m_activeTile.x;
 		m_startCoord.y = m_activeTile.y;
+		resetAlgo();
 	}
 	else if (type == FINISH)
 	{
@@ -151,6 +193,7 @@ void	Pathfinder::updateTileInfo(int type, sf::Color color)
 		}
 		m_finishCoord.x = m_activeTile.x;
 		m_finishCoord.y = m_activeTile.y;
+		resetAlgo();
 	}
 
 	// If start/finish is overwritten, init coords
@@ -159,18 +202,33 @@ void	Pathfinder::updateTileInfo(int type, sf::Color color)
 	{
 		m_startCoord.x = -1;
 		m_startCoord.y = -1;
+		resetAlgo();
 	}
 	else if (m_gridVec[m_activeTile.y][m_activeTile.x].type == FINISH \
 	&& type != FINISH)
 	{
 		m_finishCoord.x = -1;
 		m_finishCoord.y = -1;
+		resetAlgo();
 	}
 
 	// Update info
 	m_gridVec[m_activeTile.y][m_activeTile.x].type = type;
 	m_gridVec[m_activeTile.y][m_activeTile.x].color = color;
 	m_state = FREE;
+}
+
+
+/*
+	SETTERS
+*/
+
+void	Pathfinder::changeDisplayNumberState()
+{
+	if (m_dislayNumbers == false)
+		m_dislayNumbers = true;
+	else
+		m_dislayNumbers = false;
 }
 
 
@@ -184,10 +242,22 @@ InfoBox	&Pathfinder::getInfoBox()
 	return (info);
 }
 
+FinderAlgo		&Pathfinder::getAlgo()
+{
+	return (algo);
+}
+
+
 int		Pathfinder::getState()
 {
 	return (m_state);
 }
+
+bool	&Pathfinder::getDisplayNumberStatus()
+{
+	return (m_dislayNumbers);
+}
+
 
 sf::Vector2i	&Pathfinder::getStartPos()
 {

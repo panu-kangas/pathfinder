@@ -2,7 +2,8 @@
 # define INFOBOX_HPP
 
 # include <iostream>
-# include <SFML/Graphics.hpp>
+# include "Types.hpp"
+
 
 class Pathfinder;
 
@@ -24,7 +25,7 @@ class InfoBox
 	InfoBox ();
 	~InfoBox() {};
 
-	void	initInfoBox(sf::RenderWindow &window, const int &tileSize);
+	void	initInfoBox(sf::RenderWindow &window, sf::Vector2u windowSize, const int &tileSize);
 	void	draw(sf::RenderWindow &window, int state);
 
 	void	setInfoText(std::string text, std::string tileText);
