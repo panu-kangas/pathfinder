@@ -38,7 +38,7 @@ class Pathfinder
 
     public:
 
-    Pathfinder(const int &width, const int &height, const int &tileSize);
+    Pathfinder(const int &width, const int &height, int &tileSize);
     ~Pathfinder() {};
 
     void    drawGrid(sf::RenderWindow &window);

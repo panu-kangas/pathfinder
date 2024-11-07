@@ -35,7 +35,7 @@ class FinderAlgo
 	bool	execute(std::vector<std::vector<gridTile>> &gridVec);
 	void	reset();
 
-	void	drawNumbers(sf::RenderWindow &window, const int &tileSize);
+	void	drawNumbers(sf::RenderWindow &window, int &tileSize);
 
 };
 

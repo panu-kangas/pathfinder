@@ -3,15 +3,16 @@
 #include "FinderAlgo.hpp"
 
 
+int		getTileSize(const int tileCountVert);
 void    fixWindowPos(sf::RenderWindow &window, sf::Vector2u windowPxSize);
 
 
 int main()
 {
-    // Constant variables --> Should these be counted base on the monitor size...?
+    // Constant variables --> Should these be counted based on the monitor size...?
     const int   TileCountHoriz = 17;
     const int   TileCountVert = 17;
-    const int   tileSize = 80; // 40 at home, 80 at school
+    int   tileSize = getTileSize(TileCountVert); // 40 at home, 80 at school
 
 	// Count window size
 	sf::Vector2u	windowPxSize;
@@ -71,8 +72,23 @@ int main()
 
 
 /*
-	HELPER FUNCTION
+	HELPER FUNCTIONS
 */
+
+int		getTileSize(const int tileCountVert)
+{
+	int monitorHeight;
+	int	tileSize;
+
+    monitorHeight = sf::VideoMode::getDesktopMode().height * 0.8;
+	tileSize = monitorHeight / tileCountVert;
+
+	if (tileSize > 80)
+		tileSize = 80;
+
+	return (tileSize);
+}
+
 
 void    fixWindowPos(sf::RenderWindow &window, sf::Vector2u windowPxSize)
 {
@@ -81,17 +97,6 @@ void    fixWindowPos(sf::RenderWindow &window, sf::Vector2u windowPxSize)
     monitorSize.x = sf::VideoMode::getDesktopMode().width;
     monitorSize.y = sf::VideoMode::getDesktopMode().height;
 
-/*	float	height = monitorSize.y * 0.8;
-
-	if (height > windowPxSize.y)
-	{
-		sf::Vector2u	newSize;
-		newSize.x = height;
-		newSize.y = height;
-		window.setSize(newSize);
-	}
-*/
-
     // Center monitor
     sf::Vector2i windowPos;
     windowPos.x = monitorSize.x / 2 - window.getSize().x / 2;
@@ -99,15 +104,3 @@ void    fixWindowPos(sf::RenderWindow &window, sf::Vector2u windowPxSize)
     window.setPosition(windowPos);
 
 }
-
-
-// FIX THIS! It works, but you need to make it static somehow...
-	// It is NOT supposed to happen on every frame!
-/*
-		if (finder.getStartPos().x != -1 && finder.getFinishPos().x != -1)
-		{
-			FinderAlgo algo(finder.getStartPos(), finder.getFinishPos());
-			algo.countDistances(finder.getGridVec());
-			algo.draw(window, finder.getGridVec());
-		}
-*/

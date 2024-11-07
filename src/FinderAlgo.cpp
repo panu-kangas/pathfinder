@@ -78,6 +78,13 @@ bool	FinderAlgo::execute(std::vector<std::vector<gridTile>> &gridVec)
 
 	if (tileToVisitPTR != nullptr)
 		visitTile(gridVec, tileToVisitPTR->coord);
+	else
+	{
+		// Add a flag that changes the infobox message to: no path found
+		std::cout << "Not path found!\n";
+		
+		return (true);
+	}
 
 	return (false);
 }
@@ -219,7 +226,7 @@ void	FinderAlgo::reset()
 	DRAW
 */
 
-void	FinderAlgo::drawNumbers(sf::RenderWindow &window, const int &tileSize)
+void	FinderAlgo::drawNumbers(sf::RenderWindow &window, int &tileSize)
 {
 	for (gridTile *tilePTR : m_adjacentTileVec)
 	{

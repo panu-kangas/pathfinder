@@ -21,7 +21,7 @@ InfoBox::InfoBox()
 	INIT INFO
 */
 
-void	InfoBox::initInfoBox(sf::RenderWindow &window, sf::Vector2u windowSize, const int &tileSize)
+void	InfoBox::initInfoBox(sf::RenderWindow &window, sf::Vector2u windowSize, int &tileSize)
 {
 	m_boxPos.x = 0;
 	m_boxPos.y = windowSize.y - tileSize;

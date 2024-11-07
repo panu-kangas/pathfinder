@@ -4,7 +4,7 @@
     CONSTRUCTOR
 */
 
-Pathfinder::Pathfinder(const int &width, const int &height, const int &tileSize) : 
+Pathfinder::Pathfinder(const int &width, const int &height, int &tileSize) : 
 m_gridWidth(width * tileSize), m_gridHeight(height * tileSize), m_tileSize(tileSize)
 {
     initGridVec();
