@@ -14,8 +14,8 @@ FinderAlgo::FinderAlgo()
 	}
 
 	m_distanceInfoText.setFont(m_font);
+	m_straightPathFoundX = false;
 }
-
 
 /*
 	INIT
@@ -37,15 +37,14 @@ void	FinderAlgo::init(sf::Vector2i startPos, sf::Vector2i finishPos, sf::Vector2
 
 bool	FinderAlgo::execute(std::vector<std::vector<gridTile>> &gridVec)
 {
-	// OPTIMATION
-	// Check first if there is a straight route to finish. 
-	// Travel first x-axis to finishCoord.x and then upwards to finishCoord.y.
-	// If there is a wall, then check the same with y-axis travel first
-	// If straight route exists, just build finalPath based on that
-	// THIS CHECK CAN BE PERFORMED ON EVERY VISITED TILE
-
-
-	if (m_visitedTileVec.empty())
+	if (m_straightPathFoundX)
+	{
+		findFinalPath(gridVec);
+		m_straightPathFoundX = false;
+		// other flag reset ?
+		return (true);
+	}
+	else if (m_visitedTileVec.empty())
 	{
 		visitTile(gridVec, m_startCoord);
 		return (false);
@@ -104,8 +103,89 @@ void	FinderAlgo::visitTile(std::vector<std::vector<gridTile>> &gridVec, sf::Vect
 		countGridDistance(gridVec[coord.y][coord.x - 1]);
 	if (coord.x < gridVec[coord.y].size() - 1)
 		countGridDistance(gridVec[coord.y][coord.x + 1]);
+
+	if (checkForStraightRouteX(gridVec, coord))
+	{
+		m_straightPathFoundX = true;
+		return ;
+	}
+	// Do I also need checkForStraightRouteY()...?
+	// It looks like no; the algo prefers up/down directions, so it finds it's way better on the y-axis
 }
 
+/*
+	STRAIGHT PATH CHECKING
+*/
+
+bool	FinderAlgo::checkForStraightRouteX(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord)
+{
+	gridTile	*tempTilePTR = &gridVec[coord.y][coord.x];
+	int			increment;
+	bool		finishOnSameAxis = false;
+	std::vector<gridTile *>	routeVec;
+
+	// Set increment for the upcoming loop
+	if (tempTilePTR->coord.x < m_finishCoord.x)
+		increment = 1;
+	else if (tempTilePTR->coord.x > m_finishCoord.x)
+		increment = -1;
+	if (tempTilePTR->coord.x == m_finishCoord.x)
+		finishOnSameAxis = true;
+
+	// Move through x-axis searching for FINISH (or same x position as FINISH)
+	while (tempTilePTR->type != WALL && !finishOnSameAxis)
+	{
+		tempTilePTR = &gridVec[tempTilePTR->coord.y][tempTilePTR->coord.x + increment];
+		if (tempTilePTR->type == FINISH)
+			break ;
+		routeVec.push_back(tempTilePTR);
+		if (tempTilePTR->coord.x == m_finishCoord.x)
+			break ;
+	}
+
+	if (tempTilePTR->type == WALL)
+		return (false);
+	else if (tempTilePTR->type == FINISH)
+	{
+		for (gridTile *routeTile : routeVec)
+		{
+			m_visitedTileVec.push_back(routeTile);
+			routeTile->isVisited = true;
+			if (routeTile->type != START)
+				routeTile->color = sf::Color::Yellow;
+		}
+		return (true);
+	}
+	
+	// Update increment for y-axis check
+	if (tempTilePTR->coord.y < m_finishCoord.y)
+		increment = 1;
+	else if (tempTilePTR->coord.y > m_finishCoord.y)
+		increment = -1;
+
+	// Move through y-axis searching for FINISH
+	while (tempTilePTR->type != WALL)
+	{
+		tempTilePTR = &gridVec[tempTilePTR->coord.y + increment][tempTilePTR->coord.x];
+		if (tempTilePTR->type == FINISH)
+			break ;
+		routeVec.push_back(tempTilePTR);
+	}
+
+	if (tempTilePTR->type == FINISH)
+	{
+		for (gridTile *routeTile : routeVec)
+		{
+			m_visitedTileVec.push_back(routeTile);
+			routeTile->isVisited = true;
+			if (routeTile->type != START)
+				routeTile->color = sf::Color::Yellow;
+		}
+		return (true);
+	}
+
+	return (false);
+}
 
 /*
 	DISTANCE COUNTER
@@ -145,7 +225,7 @@ void	FinderAlgo::findFinalPath(std::vector<std::vector<gridTile>> &gridVec)
 	}
 
 	for (gridTile *tile : m_finalPath)
-		tile->color = sf::Color::Cyan;
+		tile->color = sf::Color{188, 220, 191};
 }
 
 gridTile	*FinderAlgo::checkAdjacentTiles(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord)
@@ -230,7 +310,7 @@ void	FinderAlgo::drawNumbers(sf::RenderWindow &window, int &tileSize)
 {
 	for (gridTile *tilePTR : m_adjacentTileVec)
 	{
-		m_distanceInfoText.setFillColor(sf::Color::Green);
+		m_distanceInfoText.setFillColor(sf::Color{64, 131, 68});
 		m_distanceInfoText.setString(std::to_string(tilePTR->distToStart));
 		m_distanceInfoText.setPosition(tilePTR->coord.x * tileSize + 2, tilePTR->coord.y * tileSize + 2);
 		window.draw(m_distanceInfoText);

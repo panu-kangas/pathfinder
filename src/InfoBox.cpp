@@ -52,10 +52,12 @@ void	InfoBox::setInfoText(std::string infoText, std::string tileText)
 	DRAW
 */
 
-void	InfoBox::draw(sf::RenderWindow &window, int state)
+void	InfoBox::draw(sf::RenderWindow &window, int state, sf::Vector2u windowSize)
 {
 	if (state == FREE)
 		setInfoText("Click one of the grid tiles to change their type", "");
+	else if (state == PATHREADY)
+		setInfoText("Click one of the grid tiles to change their type", "Press D to see\nalgorithm data");
 
 	window.draw(m_infoText);
 	window.draw(m_tileText);

@@ -12,7 +12,7 @@ int main()
     // Constant variables --> Should these be counted based on the monitor size...?
     const int   TileCountHoriz = 17;
     const int   TileCountVert = 17;
-    int   tileSize = getTileSize(TileCountVert); // 40 at home, 80 at school
+    int   tileSize = getTileSize(TileCountVert);
 
 	// Count window size
 	sf::Vector2u	windowPxSize;
@@ -57,9 +57,11 @@ int main()
 			finder.initAlgo(windowPxSize);
 			finder.executeAlgo();
 		}
+		else if (finder.getState() == PATHREADY)
+			finder.setState(FREE);
 
 		finder.drawGrid(window);
-		finder.getInfoBox().draw(window, finder.getState()); // Make more abstract
+		finder.getInfoBox().draw(window, finder.getState(), windowPxSize); // Make more abstract
 
 		if (finder.getDisplayNumberStatus())
 			finder.getAlgo().drawNumbers(window, tileSize);

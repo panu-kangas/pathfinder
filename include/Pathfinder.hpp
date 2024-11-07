@@ -27,6 +27,7 @@ class Pathfinder
 	sf::Vector2i	m_finishCoord; // in tiles
 
     int     m_state;
+	int		m_prevstate;
 	bool	m_dislayNumbers;
 	bool	m_algoInit;
 	bool	m_algoFinished;
@@ -51,6 +52,7 @@ class Pathfinder
 	void	checkClickedInput(sf::Event &event);
 
 	void	changeDisplayNumberState();
+	void	setState(int state);
 
 	InfoBox			&getInfoBox();
 	FinderAlgo		&getAlgo();

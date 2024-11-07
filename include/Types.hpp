@@ -15,7 +15,8 @@ enum gridtypes
 enum states
 {
     FREE = 10,
-    CLICKED
+    CLICKED,
+	PATHREADY
 };
 
 struct  gridTile

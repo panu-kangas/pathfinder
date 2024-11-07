@@ -10,6 +10,7 @@ m_gridWidth(width * tileSize), m_gridHeight(height * tileSize), m_tileSize(tileS
     initGridVec();
 
     m_state = FREE;
+	m_prevstate = FREE;
 	m_dislayNumbers = false;
 	m_algoInit = false;
 	m_algoFinished = false;
@@ -59,7 +60,6 @@ void	Pathfinder::initGridVec()
     }
 }
 
-
 /*
     DRAW GRID
 */
@@ -105,6 +105,8 @@ void	Pathfinder::executeAlgo()
 		return ;
 
 	m_algoFinished = algo.execute(m_gridVec);
+	if (m_algoFinished)
+		m_state = PATHREADY;
 }
 
 void	Pathfinder::resetAlgo()
@@ -113,10 +115,6 @@ void	Pathfinder::resetAlgo()
 	m_algoInit = false;
 	m_algoFinished = false;
 }
-
-
-
-
 
 /*
     INPUT HANDLING
@@ -141,8 +139,11 @@ void    Pathfinder::checkMousePress(sf::RenderWindow &window)
 
 	info.setInfoText(infoText, tileText);
 
-	if (m_state == FREE)
+	if (m_state != CLICKED)
+	{
+		m_prevstate = m_state;
 		m_state = CLICKED;
+	}
 }
 
 void	Pathfinder::checkClickedInput(sf::Event &event)
@@ -158,7 +159,7 @@ void	Pathfinder::checkClickedInput(sf::Event &event)
 			break ;
 
 		case sf::Keyboard::S :
-			updateTileInfo(START, sf::Color::Green);
+			updateTileInfo(START, sf::Color{64, 131, 68});
 			break ;
 		
 		case sf::Keyboard::F :
@@ -215,7 +216,7 @@ void	Pathfinder::updateTileInfo(int type, sf::Color color)
 	// Update info
 	m_gridVec[m_activeTile.y][m_activeTile.x].type = type;
 	m_gridVec[m_activeTile.y][m_activeTile.x].color = color;
-	m_state = FREE;
+	m_state = m_prevstate;
 }
 
 
@@ -231,6 +232,11 @@ void	Pathfinder::changeDisplayNumberState()
 		m_dislayNumbers = false;
 }
 
+void	Pathfinder::setState(int state)
+{
+	m_state = state;
+	m_prevstate = state;
+}
 
 
 /*

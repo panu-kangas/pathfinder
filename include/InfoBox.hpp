@@ -26,7 +26,7 @@ class InfoBox
 	~InfoBox() {};
 
 	void	initInfoBox(sf::RenderWindow &window, sf::Vector2u windowSize, int &tileSize);
-	void	draw(sf::RenderWindow &window, int state);
+	void	draw(sf::RenderWindow &window, int state, sf::Vector2u windowSize);
 
 	void	setInfoText(std::string text, std::string tileText);
 
