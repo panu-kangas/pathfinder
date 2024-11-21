@@ -52,12 +52,12 @@ The tile information is displayed with the following color codes:
 
 | TILE TYPE | COLOR |
 | ------------- | ------------- |
-| EMPTY TILE | White |
-| START TILE | Dark green |
-| FINISH TILE | Blue |
-| WALL TILE | Black |
-| PROCESSED TILE | Yellow (a processed tile is one that the algorithm has checked in order to find the sortest route, but hasn't then used as a part of the final shortest route)   |
-| SHORTEST ROUTE TILE | Light green |
+| Empty tile | White |
+| Start tile | Dark green |
+| Finish tile | Blue |
+| Wall tile | Black |
+| Processed tile | Yellow (a processed tile is one that the algorithm has checked in order to find the sortest route, but hasn't then used as a part of the final shortest route)   |
+| Shortest route tile | Light green |
 
 
 The user can also see the algorithm's movement calculations by pressing the D -key. These calculations include "movement cost to start tile" in dark green number, the "movement cost to finish tile" in blue number, and then the most important number: the combined start & finish movement cost, which then determines what tile the algorithm chooses to analyze further.
@@ -65,9 +65,11 @@ The user can also see the algorithm's movement calculations by pressing the D -k
  
 ### Controls
 
-MOUSE (LEFT BUTTON) - Click on a tile to change it's status.  
-WESF - After clicking, change the tile status by pressing W (for Wall), E (for Empty), S (for Start) or F (for Finish).  
-D - Press D to see the algorithm's calculation data for finding the shortest route.  
+| KEY | ACTION |
+| ------------- | ------------- |
+| Left mouse button | Click on a tile to change it's status |
+| WESF | After clicking, change the tile status by pressing W (for Wall), E (for Empty), S (for Start) or F (for Finish) |
+| D | Press D to see the algorithm's calculation data for finding the shortest route. |
 
 
 # Future develompent ideas
