@@ -35,6 +35,7 @@ void	Pathfinder::initGridVec()
 	tempTile.distToFinish = 0;
 	tempTile.isVisited = false;
 	tempTile.isFinalPath = false;
+	tempTile.isDeadEnd = false;
 
     for (int y = 0; y < m_gridHeight; y += m_tileSize)
     {

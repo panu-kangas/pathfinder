@@ -26,6 +26,7 @@ struct  gridTile
 	sf::Vector2i	coord;
 	bool			isVisited;
 	bool			isFinalPath;
+	bool			isDeadEnd;
 
 	int				distToStart;
 	int				distToFinish;

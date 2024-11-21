@@ -25,6 +25,7 @@ class FinderAlgo
 	void		countGridDistance(gridTile &tile);
 	void		findFinalPath(std::vector<std::vector<gridTile>> &gridVec);
 	bool		checkForStraightRouteX(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord);
+	bool		isStartReached(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord);
 
 //////
 

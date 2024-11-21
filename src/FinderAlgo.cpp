@@ -218,15 +218,44 @@ void	FinderAlgo::findFinalPath(std::vector<std::vector<gridTile>> &gridVec)
 	{
 		pathTile = checkAdjacentTiles(gridVec, curCoord);
 		if (pathTile == nullptr)
-			break ;
-		pathTile->isFinalPath = true;
-		m_finalPath.push_back(pathTile);
+		{
+			if (isStartReached(gridVec, curCoord))
+				break ;
+	
+			pathTile = m_finalPath.back();
+			pathTile->isDeadEnd = true;
+			m_finalPath.pop_back();
+			pathTile = m_finalPath.back();
+		}
+		else
+		{
+			pathTile->isFinalPath = true;
+			m_finalPath.push_back(pathTile);
+		}
 		curCoord = pathTile->coord;
 	}
 
 	for (gridTile *tile : m_finalPath)
 		tile->color = sf::Color{188, 220, 191};
 }
+
+bool		FinderAlgo::isStartReached(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord)
+{
+	int	x = coord.x;
+	int y = coord.y;
+
+	if (x < gridVec[y].size() - 1 && gridVec[y][x + 1].type == START)
+		return (true);
+	else if (x > 0 && gridVec[y][x - 1].type == START)
+		return (true);
+	else if (y < gridVec.size() - 1 && gridVec[y + 1][x].type == START)
+		return (true);
+	else if (y > 0 && gridVec[y - 1][x].type == START)
+		return (true);
+
+	return (false);
+}
+
 
 gridTile	*FinderAlgo::checkAdjacentTiles(std::vector<std::vector<gridTile>> &gridVec, sf::Vector2i coord)
 {
@@ -251,7 +280,7 @@ gridTile	*FinderAlgo::checkAdjacentTiles(std::vector<std::vector<gridTile>> &gri
 		if (checkTile.type == START)
 			return (nullptr);
 
-		if (checkTile.isVisited == true && checkTile.isFinalPath == false)
+		if (checkTile.isVisited == true && checkTile.isFinalPath == false && checkTile.isDeadEnd == false)
 		{
 			if (smallestTotal == -1 || checkTile.distTotal < smallestTotal)
 			{
@@ -295,6 +324,7 @@ void	FinderAlgo::reset()
 		tilePTR->distTotal = 0;
 		tilePTR->isVisited = false;
 		tilePTR->isFinalPath = false;
+		tilePTR->isDeadEnd = false;
 		if (tilePTR->type != START && tilePTR->type != WALL)
 			tilePTR->color = sf::Color::White;
 	}
