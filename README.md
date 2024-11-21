@@ -50,12 +50,15 @@ The shortest route is counted based on the assumption, that movement in the tile
 
 The tile information is displayed with the following color codes: 
 
-EMPTY TILE - White  
-START TILE - Dark green  
-FINISH TILE - Blue  
-WALL TILE - Black  
-PROCESSED TILE - Yellow (a processed tile is one that the algorithm has checked in order to find the sortest route, but hasn't then used as a part of the final shortest route)  
-SHORTEST ROUTE TILE - Light green  
+| TILE TYPE | COLOR |
+| ------------- | ------------- |
+| EMPTY TILE | White |
+| START TILE | Dark green |
+| FINISH TILE | Blue |
+| WALL TILE | Black |
+| PROCESSED TILE | Yellow (a processed tile is one that the algorithm has checked in order to find the sortest route, but hasn't then used as a part of the final shortest route)   |
+| SHORTEST ROUTE TILE | Light green |
+
 
 The user can also see the algorithm's movement calculations by pressing the D -key. These calculations include "movement cost to start tile" in dark green number, the "movement cost to finish tile" in blue number, and then the most important number: the combined start & finish movement cost, which then determines what tile the algorithm chooses to analyze further.
 
