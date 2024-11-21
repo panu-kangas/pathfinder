@@ -70,7 +70,7 @@ The user can also see the algorithm's movement calculations by pressing the D -k
 | KEY | ACTION |
 | ------------- | ------------- |
 | Left mouse button | Click on a tile to change it's status |
-| WESF | After clicking, change the tile status by pressing W (for Wall), E (for Empty), S (for Start) or F (for Finish) |
+| W, E, S & F | After clicking, change the tile status by pressing W (for Wall), E (for Empty), S (for Start) or F (for Finish) |
 | D | Press D to see the algorithm's calculation data for finding the shortest route. |
 
 
