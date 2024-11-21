@@ -56,8 +56,10 @@ The tile information is displayed with the following color codes:
 | Start tile | Dark green |
 | Finish tile | Blue |
 | Wall tile | Black |
-| Processed tile | Yellow (a processed tile is one that the algorithm has checked in order to find the sortest route, but hasn't then used as a part of the final shortest route)   |
-| Shortest route tile | Light green |
+| Processed tile | Yellow |
+| Shortest route tile | Light green | 
+
+A processed tile is one that the algorithm has checked in order to find the shortest route, but hasn't then used as a part of the final route.
 
 
 The user can also see the algorithm's movement calculations by pressing the D -key. These calculations include "movement cost to start tile" in dark green number, the "movement cost to finish tile" in blue number, and then the most important number: the combined start & finish movement cost, which then determines what tile the algorithm chooses to analyze further.
