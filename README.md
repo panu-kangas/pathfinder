@@ -43,8 +43,8 @@ Run the following commands in your terminal:
 # About the program
 
 In this pathfinder program, the user can place a "start tile" and "finish tile" on a tile grid map. Once these tiles have been set, the program utilizes the A* pathfinding algorithm to calculate and show the shortest route from start to finish.  
-The user can also place walls on the tile grid map and thus challenge the algorithm to manouver around walls and still find the shortest route. 
-There are a few bugs, but I still think that the algorithm works quite well! 🙂
+The user can also place walls on the tile grid map and thus create more challenge for the algorithm (because... you can't go through walls, right?). 
+There are a few bugs in the pathfinding algorithm, but I am about to fix them!!
  
 The shortest route is counted based on the assumption, that movement in the tile grid can only be done in up/down & left/right directions, and every move has an equal "movement cost" of 1. 
 
